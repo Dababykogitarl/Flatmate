@@ -1,0 +1,52 @@
+{
+  "name": "flatmate-api",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start:dev": "nest start --watch",
+    "build": "nest build",
+    "start:prod": "node dist/src/main.js",
+    "migration:run": "typeorm-ts-node-commonjs -d src/database/data-source.ts migration:run",
+    "migration:revert": "typeorm-ts-node-commonjs -d src/database/data-source.ts migration:revert",
+    "test": "jest",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.850.0",
+    "@nestjs/bullmq": "^11.0.2",
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/jwt": "^11.0.0",
+    "@nestjs/platform-express": "^11.1.0",
+    "@nestjs/platform-socket.io": "^11.1.0",
+    "@nestjs/typeorm": "^11.0.0",
+    "@nestjs/websockets": "^11.0.0",
+    "bullmq": "^5.56.0",
+    "bcryptjs": "^3.0.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.1",
+    "ioredis": "^5.6.1",
+    "kafkajs": "^2.2.4",
+    "pg": "^8.16.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "typeorm": "^0.3.25"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.7",
+    "@nestjs/testing": "^11.1.0",
+    "@types/jest": "^30.0.0",
+    "@types/cookie-parser": "^1.4.9",
+    "@types/node": "^22.15.0",
+    "jest": "^30.0.0",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
