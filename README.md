@@ -229,7 +229,7 @@ npm test -- --runInBand
 
 ## Copyright and Usage
 
-Copyright © 2026 Mansi. All rights reserved.
+Copyright © 2026 Mansi Khand. All rights reserved.
 
 This project is publicly available for portfolio and educational review only.
 No permission is granted to copy, modify, distribute, sell, sublicense, or reuse
