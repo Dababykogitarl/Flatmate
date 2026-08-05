@@ -289,17 +289,39 @@ export default function FlatmateApp() {
     }
   }
 
-  async function addExpense(event: FormEvent<HTMLFormElement>) {
+    async function addExpense(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const activeSession = session;
+    if (!activeSession) return;
+
     const data = new FormData(event.currentTarget);
     const amount = Number(data.get("amount"));
+
     try {
-      const created = connection === "live"
-        ? await api<ApiExpense>("/expenses", { method: "POST", body: JSON.stringify({ title: String(data.get("title")), amount }) })
-        : null;
+      const created =
+        connection === "live"
+          ? await api<ApiExpense>("/expenses", {
+              method: "POST",
+              body: JSON.stringify({
+                title: String(data.get("title")),
+                amount,
+              }),
+            })
+          : null;
+
       const expense = created
-        ? fromApiExpense(created, session, memberById)
-        : { id: Date.now(), title: String(data.get("title")), paidBy: "You", amount, yourShare: -(amount * 0.75), date: "Just now", settled: false };
+        ? fromApiExpense(created, activeSession, memberById)
+        : {
+            id: Date.now(),
+            title: String(data.get("title")),
+            paidBy: "You",
+            amount,
+            yourShare: -(amount * 0.75),
+            date: "Just now",
+            settled: false,
+          };
+
       setExpenses((items) => [expense, ...items]);
       setModal(null);
       flash("Expense added and split with the home.");
@@ -309,15 +331,29 @@ export default function FlatmateApp() {
   }
 
   async function settleExpense(id: string | number) {
+    const activeSession = session;
+    if (!activeSession) return;
+
     try {
-      const updated = await api<ApiExpense>(`/expenses/${id}/splits/${currentUserId}/settle`, { method: "PATCH" });
-      setExpenses((items) => items.map((item) => item.id === id ? fromApiExpense(updated, session, memberById) : item));
+      const updated = await api<ApiExpense>(
+        `/expenses/${id}/splits/${currentUserId}/settle`,
+        { method: "PATCH" },
+      );
+
+      setExpenses((items) =>
+        items.map((item) =>
+          item.id === id
+            ? fromApiExpense(updated, activeSession, memberById)
+            : item,
+        ),
+      );
+
       flash("Your share was marked paid and the home was notified.");
     } catch (error) {
       flash(error instanceof Error ? error.message : "Could not settle this expense");
     }
   }
-
+  
   async function inviteMember(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

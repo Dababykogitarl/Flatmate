@@ -4,6 +4,6 @@ import { AppNotification, Duty, DutyCompletion, Expense, GroupMembership, Home, 
 
 export default new DataSource({
   type: "postgres", url: process.env.DATABASE_URL,
-  entities: [Home, Member, SharedGroup, GroupMembership, Duty, DutyCompletion, Expense, AppNotification], migrations: ["src/database/migrations/*.ts"],
+  entities: [Home, Member, SharedGroup, GroupMembership, Duty, DutyCompletion, Expense, AppNotification], migrations: [`${__dirname}/migrations/*{.ts,.js}`],
   synchronize: false, ssl: process.env.DATABASE_SSL === "true" ? { rejectUnauthorized: false } : false,
 });
