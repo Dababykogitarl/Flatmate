@@ -138,58 +138,6 @@ NEXT_PUBLIC_GOOGLE_AUTH_ENABLED=true
 
 Google sign-in deliberately accepts only a Gmail address that has already registered a home or received a valid Flatmate invitation. It cannot be used to enter an unrelated apartment.
 
-## Optional Kafka events
-
-Start Kafka with:
-
-```powershell
-docker compose --profile events up -d kafka
-```
-
-Then set these values in `server/.env`:
-
-```env
-KAFKA_ENABLED=true
-KAFKA_BROKERS=localhost:9092
-KAFKA_TOPIC=flatmate.notifications
-```
-
-When `SQS_NOTIFICATION_QUEUE_URL` is configured, SQS takes priority. Otherwise enabled Kafka receives notification events. With neither configured, WebSocket and Redis/BullMQ delivery still work locally.
-
-## API endpoints
-
-| Method | Endpoint | Access |
-| --- | --- | --- |
-| POST | `/api/v1/auth/register` | Public |
-| POST | `/api/v1/auth/login` | Public |
-| POST | `/api/v1/auth/logout` | Public |
-| POST | `/api/v1/auth/demo` | Development demo mode |
-| GET | `/api/v1/auth/me` | Signed-in member |
-| GET | `/api/v1/auth/google` | Public; begin configured Google sign-in |
-| GET | `/api/v1/auth/google/callback` | Public; verified Google callback |
-| GET | `/api/v1/auth/invitations/:token` | Public; inspect an invitation |
-| POST | `/api/v1/auth/invitations/:token/accept` | Public; create the invited member's password |
-| GET/POST | `/api/v1/duties` | Signed-in member |
-| PATCH/DELETE | `/api/v1/duties/:id` | Member with duty-group access |
-| PATCH | `/api/v1/duties/:id/complete` | Signed-in member |
-| GET | `/api/v1/duties/history` | Signed-in member; accessible completion history |
-| GET | `/api/v1/groups` | Signed-in member; accessible groups only |
-| POST | `/api/v1/groups` | Primary member |
-| PATCH/DELETE | `/api/v1/groups/:id` | Primary member |
-| POST/DELETE | `/api/v1/groups/:id/members` | Primary member |
-| GET/POST | `/api/v1/expenses` | Signed-in member |
-| PATCH | `/api/v1/expenses/:id/splits/:memberId/settle` | Owing member, payer, or primary member |
-| PATCH | `/api/v1/expenses/:id/splits/:memberId/unsettle` | Payer or primary member |
-| GET | `/api/v1/members` | Signed-in member |
-| POST | `/api/v1/members` | Primary member |
-| POST | `/api/v1/members/:id/reinvite` | Primary member |
-| PATCH | `/api/v1/members/:id/role` | Primary member |
-| DELETE | `/api/v1/members/:id` | Primary member |
-| GET | `/api/v1/notifications` | Signed-in member; own notifications only |
-| PATCH | `/api/v1/notifications/read-all` | Signed-in member |
-| PATCH | `/api/v1/notifications/:id/read` | Signed-in member; own notification only |
-| GET | `/api/v1/health` | Public |
-
 ## Validation
 
 Web:
